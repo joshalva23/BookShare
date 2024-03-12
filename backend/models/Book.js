@@ -7,10 +7,11 @@ const bookSchema = new Schema({
   description: String,
   genre: String,
   userId: String,
-  image: {
-    data: Buffer,
-    contentType: String
-  }
+  // image: String
+  // image: {
+  //   data: Buffer,
+  //   contentType: String
+  // }
 }, {
   collection: "books"
 });

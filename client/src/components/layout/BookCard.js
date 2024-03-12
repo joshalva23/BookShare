@@ -4,16 +4,18 @@ import React from "react";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import { Link } from "react-router-dom";
-import {renderImage} from "../../helper/image.js";
+import { renderImage } from "../../helper/image.js";
 
 function BookCard(props) {
-
+  // const srcimage = props.image;
   return (
     <div>
       <Col md="4">
-        <Link to={"/books/" + props.id} style={{color: "inherit", textDecoration: "none"}}>
+        <Link to={"/books/" + props.id} style={{ color: "inherit", textDecoration: "none" }}>
           <Card>
-            <Card.Img src={renderImage(props.image.data.data, props.image.contentType)} alt="book-image" />
+            {/* <Card.Img src={renderImage(props.image.data.data, props.image.contentType)} alt="book-image" /> */}
+            {/* <Card.Img src={renderImage(props.image)} alt="book-image" /> */}
+            {/* <Card.Img src={props.image} alt="book-image" /> */}
             <Card.Body>
               <Card.Title>{props.name}</Card.Title>
               <Card.Subtitle>By {props.author}</Card.Subtitle>

@@ -19,8 +19,8 @@ function Header(props) {
 
           <Navbar.Brand>
             <Link to={"/"} className="nav-link">
-              <LibraryBooksIcon color="secondary"/>
-              <h1>2ndBook</h1>
+              <LibraryBooksIcon color="secondary" />
+              <h1>Book Share</h1>
             </Link>
           </Navbar.Brand>
 
@@ -28,7 +28,7 @@ function Header(props) {
             <Nav.Item>
 
               {props.auth.isAuthenticated ? (
-                <DropdownButton alignRight className="profile-dropdown" title={<AccountCircleIcon style={{color: "#808080"}} fontSize="large"/>}>
+                <DropdownButton alignRight className="profile-dropdown" title={<AccountCircleIcon style={{ color: "#808080" }} fontSize="large" />}>
                   <Dropdown.Item href={"/users/profile/" + props.auth.user.id}>Profile</Dropdown.Item>
                   <Dropdown.Item as="button" onClick={props.logoutUser}>Logout</Dropdown.Item>
                 </DropdownButton>

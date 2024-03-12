@@ -5,9 +5,9 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
-import {renderImage} from "../../helper/image.js";
-import {Link} from "react-router-dom";
-import {connect} from "react-redux";
+import { renderImage } from "../../helper/image.js";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import MenuBookIcon from "@material-ui/icons/MenuBook";
 import EditIcon from "@material-ui/icons/Edit";
@@ -46,8 +46,8 @@ function BookInfo(props) {
           author: res.data.book.author,
           bookDes: res.data.book.description,
           genre: res.data.book.genre,
-          imageBuffer: res.data.book.image.data.data,
-          imageType: res.data.book.image.contentType
+          // imageBuffer: res.data.book.image.data.data,                                     change these
+          // imageType: res.data.book.image.contentType
         })
         setIsForbidden(res.data.permission);
       }).catch(error => {
@@ -91,33 +91,33 @@ function BookInfo(props) {
     <div className="bookinfo-wrapper">
       <Row>
         <Col className="bookinfo-image-wrapper" md={6} xs={12}>
-          <img src={renderImage(oldBook.imageBuffer, oldBook.imageType)} alt={oldBook.bookName}/>
+          {/* <img src={renderImage(oldBook.imageBuffer, oldBook.imageType)} alt={oldBook.bookName} /> change this*/}
           {
-            !isForbidden ? 
-            (<div>
-              <Tooltip 
-                title="Edit record" 
-                placement="bottom">
-                  <Link to={`/books/edit/${props.match.params.id}`}><EditIcon className="icon"/></Link>
-              </Tooltip>
-              <Tooltip 
-                title="Delete record" 
-                placement="bottom">
-                  <DeleteIcon className="icon" onClick={() => deleteBook(props.match.params.id)}/>
-              </Tooltip>
-            </div>) : null
+            !isForbidden ?
+              (<div>
+                <Tooltip
+                  title="Edit record"
+                  placement="bottom">
+                  <Link to={`/books/edit/${props.match.params.id}`}><EditIcon className="icon" /></Link>
+                </Tooltip>
+                <Tooltip
+                  title="Delete record"
+                  placement="bottom">
+                  <DeleteIcon className="icon" onClick={() => deleteBook(props.match.params.id)} />
+                </Tooltip>
+              </div>) : null
           }
         </Col>
         <Col md={6} xs={12}>
           <div className="book-owner-wrapper">
-            <AccountCircleIcon style={{color: "#808080"}}/>
+            <AccountCircleIcon style={{ color: "#808080" }} />
             <Link to={`/users/profile/${bookOwner.ownerId}`}><Button className="uploaded-by-link" variant="link">{bookOwner.ownerName}</Button></Link>
           </div>
           <h2>{oldBook.bookName}</h2>
-          <hr/>
-          <p><EditAttributesIcon/> {oldBook.author}</p> 
-          <p><MenuBookIcon/> {oldBook.genre}</p>
-          <hr/>
+          <hr />
+          <p><EditAttributesIcon /> {oldBook.author}</p>
+          <p><MenuBookIcon /> {oldBook.genre}</p>
+          <hr />
           {/* "Read More" if text longer than 530 */}
           <p className="book-des">{isMore === "more" ? oldBook.bookDes.substring(0, 530) : oldBook.bookDes}</p>
           {oldBook.bookDes.length > 530 ? <button className="read-more" onClick={readMore}>Read {isMore}</button> : null}

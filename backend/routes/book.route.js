@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
-const multer = require("multer"); 
+const multer = require("multer");
 const bookSchema = require("../models/Book");
-const {getLoggedinUser} = require("../middleware/user.js"); // Get the logged in user 
+// const Book = require("../models/Book");
+const { getLoggedinUser } = require("../middleware/user.js"); // Get the logged in user 
 const shuffle = require("../shuffle");
 
 // Books Model
@@ -21,7 +22,7 @@ router.route("/").get(async (req, res) => {
   let allBooks = [];
 
   try {
-    const allUsers = await User.find(); 
+    const allUsers = await User.find();
     allUsers.map(user => {
       const userBooks = user.books;
       allBooks = [...allBooks, ...userBooks];
@@ -32,8 +33,8 @@ router.route("/").get(async (req, res) => {
     allBooks = shuffle(allBooks);
 
     return res.status(200).json(allBooks);
-  } catch(error) {
-    return res.status(500).json({error: error.message});
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
   }
 
 });
@@ -45,9 +46,9 @@ router.route("/books/:id").get(getLoggedinUser, async (req, res) => {
   let isForbidden = true;
 
   try {
-    const user = await User.findOne({"books._id": req.params.id}); // Find the user with the book
+    const user = await User.findOne({ "books._id": req.params.id }); // Find the user with the book
 
-    if(res.loggedinUser !== null && res.loggedinUser.id === user._id.toString()) { // Check if the book belongs to the logged in user
+    if (res.loggedinUser !== null && res.loggedinUser.id === user._id.toString()) { // Check if the book belongs to the logged in user
       isForbidden = false; // This controls whether the user can edit or delete the book
     }
 
@@ -56,7 +57,7 @@ router.route("/books/:id").get(getLoggedinUser, async (req, res) => {
       return userBook._id.toString() === req.params.id
     });
     if (foundBook === null) {
-      return res.status(404).json({error: "Book not found"}); // NEED TO RENDER 404
+      return res.status(404).json({ error: "Book not found" }); // NEED TO RENDER 404
     }
     return res.status(200).json({
       book: foundBook,
@@ -64,7 +65,7 @@ router.route("/books/:id").get(getLoggedinUser, async (req, res) => {
     });
 
   } catch (error) {
-    return res.status(500).json({error: error.message});
+    return res.status(500).json({ error: error.message });
   }
 
 });
@@ -83,17 +84,18 @@ router.route("/users/:id").get(async (req, res) => {
   try {
     const foundUser = await User.findById(req.params.id);
     if (!foundUser) {
-      return res.status(404).json({error: "User not found"});
+      return res.status(404).json({ error: "User not found" });
     }
     return res.status(200).json(foundUser);
-  } catch(error) {
-    return res.status(500).json({error: error.message});
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
   }
 });
 
 // POST book to loggedinUser account
 // Requires authentication. Can only be performed by loggedinUser
-router.route("/books/add").post(getLoggedinUser, upload.single("image"), async(req, res) => {
+router.route("/books/add").post(getLoggedinUser, upload.single("image"), async (req, res) => {
+  // router.route("/books/add").post(getLoggedinUser, async (req, res) => {
 
   const newBook = new Book({
     name: req.body.name,
@@ -101,19 +103,19 @@ router.route("/books/add").post(getLoggedinUser, upload.single("image"), async(r
     description: req.body.description,
     genre: req.body.genre,
     userId: req.body.userId,
-    image: {
-      data: req.file.buffer, // Buffer data in memory
-      contentType: req.file.mimetype
-    }
+    image: String
+    // image: {
+    //   data: req.file.buffer, // Buffer data in memory
+    //   contentType: req.file.mimetype
+    // }
   });
 
   res.loggedinUser.books.push(newBook);
-
   try {
     const updatedUser = await res.loggedinUser.save(); // Save to User
     return res.status(200).json(updatedUser);
-  } catch(error) {
-    return res.status(400).json({error: error.message});
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
   }
 
 });
@@ -139,16 +141,16 @@ router.route("/books/edit/:id").put(getLoggedinUser, upload.single("image"), asy
 
   res.loggedinUser.books.forEach((userBook, index) => {
     if (userBook._id.toString() === req.params.id) {
-      res.loggedinUser.books[index] = {...userBook._doc, ...updateBook};
+      res.loggedinUser.books[index] = { ...userBook._doc, ...updateBook };
     }
   });
 
-    try {
-      const updatedUser = await res.loggedinUser.save();
-      return res.status(200).json(updatedUser);
-    } catch(error) {
-      return res.status(500).json({error: error.message});
-    }
+  try {
+    const updatedUser = await res.loggedinUser.save();
+    return res.status(200).json(updatedUser);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
 
 });
 
@@ -166,7 +168,7 @@ router.route("/books/:id").delete(getLoggedinUser, async (req, res) => {
     const updatedUser = await res.loggedinUser.save();
     return res.status(200).json(updatedUser);
   } catch (error) {
-    return res.status(500).json({error: error.message});
+    return res.status(500).json({ error: error.message });
   }
 
 });
@@ -174,17 +176,17 @@ router.route("/books/:id").delete(getLoggedinUser, async (req, res) => {
 // Get the owner of the book
 router.route("/books/:id/user").get(async (req, res) => {
   try {
-    const ownerData = await User.findOne({"books._id": req.params.id});
+    const ownerData = await User.findOne({ "books._id": req.params.id });
     if (!ownerData) {
-      return res.status(404).json({error: "Owner of book not found"});
+      return res.status(404).json({ error: "Owner of book not found" });
     }
     const bookOwner = {
       ownerId: ownerData._id,
       ownerName: ownerData.username
     }
     return res.status(200).json(bookOwner);
-  } catch(error) {
-    return res.status(500).json({error: error.message});
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
   }
 });
 

@@ -11,17 +11,18 @@ const bookRoute = require("./routes/book.route");
 const userRoute = require("./routes/user.route");
 
 const app = express();
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
 // Connect to MongoDB database;
-mongoose.connect(keys.mongoURI, {useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true}).then(() => {
+// mongoose.connect(keys.mongoURI, { useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true }).then(() => {
+mongoose.connect(keys.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
   console.log("Database successfully connected!");
 }).catch((error) => {
   console.log(`Database not connected: ${error}`);
 });
-mongoose.set("useCreateIndex", true);
+// mongoose.set("useCreateIndex", true);
 
 // Passport middleware
 app.use(passport.initialize());

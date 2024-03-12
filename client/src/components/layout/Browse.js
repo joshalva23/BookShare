@@ -38,20 +38,21 @@ function Browse() {
     return book[searchBy.toLowerCase()].toLowerCase().indexOf(search.toLowerCase()) !== -1;
   });
 
-  return(
+  return (
     <div>
-      <Search searchBy={searchBy} setSearchBy={setSearchBy} search={search} setSearch={setSearch}/>
+      <Search searchBy={searchBy} setSearchBy={setSearchBy} search={search} setSearch={setSearch} />
       <Row className="card-deck">
         {filteredBooks.length === 0 ? <h1 className="no-results">No books found</h1> : null}
-        {filteredBooks.map(book => 
-          <BookCard 
-            key={uuidv1()} 
-            id={book._id} 
-            name={book.name} 
+        {filteredBooks.map(book =>
+          <BookCard
+            key={uuidv1()}
+            id={book._id}
+            name={book.name}
             author={book.author}
-            description={book.description} 
-            genre={book.genre} 
-            image={book.image} />)}
+            description={book.description}
+            genre={book.genre}
+          // image={book.image}
+          />)}
       </Row>
     </div>
   )
