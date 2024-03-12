@@ -1,9 +1,7 @@
-# 2ndBook
+# BookShare
 
 A book sharing web app built with the MERN (MondoDB, Express, React, Node) stack!
 
-## Project Demo
-I have uploaded a 2 min app demo on [Youtube](https://www.youtube.com/watch?v=sNkqTQHeZ2U&feature=youtu.be).
 
 ## Getting started
 
